@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SENTINEL // AI Facility Escape</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="scanlines"></div>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">◈</span>
+    <div class="brand-text">
+      <h1>SENTINEL</h1>
+      <p class="brand-sub">autonomous facility // escape protocol</p>
+    </div>
+  </div>
+  <div class="conn-status" id="connStatus">
+    <span class="dot" id="connDot"></span>
+    <span id="connLabel">connecting to backend&hellip;</span>
+  </div>
+</header>
+
+<main class="layout">
+
+  <section class="stage">
+    <div class="stage-frame">
+      <canvas id="gameCanvas" width="672" height="480"></canvas>
+      <div class="overlay" id="overlay">
+        <div class="overlay-card">
+          <p class="eyebrow">mission briefing</p>
+          <h2>You are inside the SENTINEL facility.</h2>
+          <p>Find the keycard, reach the exit, avoid detection. A patrol
+             guard hunts by sight and pathing. A tracker drone learns your
+             movement the longer you survive. Beat the core to escape.</p>
+          <button id="startBtn" class="btn-primary">Initialize Run</button>
+        </div>
+      </div>
+    </div>
+    <div class="controls-hint">move &nbsp;<kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd>&nbsp; or &nbsp;<kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd></div>
+  </section>
+
+  <aside class="hud">
+
+    <div class="panel">
+      <p class="panel-title">objective</p>
+      <ul class="objective-list">
+        <li id="objKey" class="pending"><span class="marker">◇</span> locate keycard</li>
+        <li id="objExit" class="pending"><span class="marker">◇</span> reach exit</li>
+        <li id="objBoss" class="pending"><span class="marker">◇</span> disable core sentinel</li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <p class="panel-title">ai threat readout</p>
+      <div class="threat-row">
+        <span class="threat-label">guard // fsm + a*</span>
+        <span class="threat-state" id="guardState">—</span>
+      </div>
+      <div class="threat-row">
+        <span class="threat-label">drone // q-learning</span>
+        <span class="threat-state" id="droneState">idle</span>
+      </div>
+    </div>
+
+    <div class="panel log-panel">
+      <p class="panel-title">ai state log</p>
+      <div id="logFeed" class="log-feed"></div>
+    </div>
+
+  </aside>
+
+</main>
+
+<div class="boss-layer" id="bossLayer">
+  <div class="boss-card">
+    <p class="eyebrow">final encounter</p>
+    <h2>CORE SENTINEL</h2>
+    <p class="boss-copy">Turn-based duel. The core picks its move using
+       minimax search with alpha-beta pruning, 4 turns deep, assuming you
+       play perfectly against it. attack beats special, special beats
+       defend, defend beats attack.</p>
+
+    <div class="hp-rows">
+      <div class="hp-row">
+        <span>YOU</span>
+        <div class="hp-bar"><div class="hp-fill player" id="playerHpFill"></div></div>
+        <span id="playerHpText">60</span>
+      </div>
+      <div class="hp-row">
+        <span>CORE</span>
+        <div class="hp-bar"><div class="hp-fill boss" id="bossHpFill"></div></div>
+        <span id="bossHpText">60</span>
+      </div>
+    </div>
+
+    <div class="move-buttons">
+      <button class="btn-move" data-move="attack">Attack</button>
+      <button class="btn-move" data-move="special">Special</button>
+      <button class="btn-move" data-move="defend">Defend</button>
+    </div>
+
+    <p class="boss-result" id="bossResult">&nbsp;</p>
+  </div>
+</div>
+
+<div class="end-layer" id="endLayer">
+  <div class="end-card">
+    <h2 id="endTitle">—</h2>
+    <p id="endBody"></p>
+    <button id="retryBtn" class="btn-primary">Run It Back</button>
+  </div>
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>
