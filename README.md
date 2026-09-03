@@ -100,4 +100,4 @@ picks).
   next step toward Deep Q-Networks).
 - Add a second guard and have them share a blackboard so they coordinate
   search patterns.
-- Make maze difficulty scale with a seed parameter exposed in the UI.
+- Make maze difficulty scale with a seed parameter exposed in the UI..
